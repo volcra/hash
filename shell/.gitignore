@@ -1,0 +1,7 @@
+build/*
+target/*
+*sublime*
+*.zip
+.gradle/*
+*.log
+*.bat

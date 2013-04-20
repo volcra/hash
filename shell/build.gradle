@@ -1,0 +1,26 @@
+apply plugin: 'groovy'
+apply plugin: 'application'
+
+description = 'Hash Shell'
+mainClassName = "org.springframework.shell.Bootstrap"
+
+repositories {
+    mavenCentral()
+
+    maven { url "http://spring-roo-repository.springsource.org/release" }
+}
+
+dependencies {
+    compile "org.springframework.shell:spring-shell:$springShellVersion"
+    compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-context-support:$springVersion"
+    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+
+    runtime "log4j:log4j:$log4jVersion"
+
+    testCompile "junit:junit:4.11"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.5'
+}
