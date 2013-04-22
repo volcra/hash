@@ -5,3 +5,9 @@ target/*
 .gradle/*
 *.log
 *.bat
+
+#clipse
+.project
+.classpath
+.settings/
+bin/

@@ -12,8 +12,7 @@ class HashBannerProviderTest extends GroovyTestCase {
     }
 
     void testGetWelcomeMessage() {
-        assert provider.getWelcomeMessage() ==
-            "Welcome to ${provider.name()} ${provider.getVersion()}.\nFor assistance press or type \"help\" then hit ENTER."
+        assert provider.getWelcomeMessage() == "Welcome to ${provider.name()} ${provider.getVersion()}.\nFor assistance press or type \"help\" then hit ENTER."
     }
 
     void testName() {

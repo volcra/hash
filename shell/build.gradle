@@ -1,5 +1,6 @@
 apply plugin: 'groovy'
 apply plugin: 'application'
+apply plugin: 'eclipse'
 
 description = 'Hash Shell'
 mainClassName = "org.springframework.shell.Bootstrap"

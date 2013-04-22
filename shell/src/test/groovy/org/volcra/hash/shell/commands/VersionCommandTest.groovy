@@ -1,13 +1,16 @@
 package org.volcra.hash.shell.commands
 
+import org.volcra.hash.shell.support.HashBannerProvider
+
+
 class VersionCommandTest extends GroovyTestCase {
     def command = new VersionCommand()
 
     void setUp() {
-        println "set up"
+        command.banner = [version: "0.0.1-SNAPSHOT"] as HashBannerProvider
     }
 
     void testVersion() {
-        assert "0.0.1-SNAPSHOT" == command.version()
+        assert "#Shell 0.0.1-SNAPSHOT" == command.version()
     }
 }
