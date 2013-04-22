@@ -1,7 +1,5 @@
 package org.volcra.hash.shell.support
 
-import groovy.util.GroovyTestCase
-
 class HashBannerProviderTest extends GroovyTestCase {
     def provider = new HashBannerProvider()
 
