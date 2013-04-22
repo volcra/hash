@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class HashPromptProvider implements PromptProvider {
 
-    String getPrompt() {
-        "#>"
-    }
+	String getPrompt() {
+		"#>"
+	}
 
-    String name() {
-        "# prompt provider"
-    }
+	String name() {
+		"# prompt provider"
+	}
 }
