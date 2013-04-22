@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component
 
 @Component
 class VersionCommand implements CommandMarker {
-	@Autowired
-	HashBannerProvider banner
+    @Autowired
+    HashBannerProvider banner
 
-	@CliCommand("version")
-	def version() {
-		"${banner.name()} ${banner.getVersion()}"
-	}
+    @CliCommand("version")
+    def version() {
+        "${banner.name()} ${banner.getVersion()}"
+    }
 }

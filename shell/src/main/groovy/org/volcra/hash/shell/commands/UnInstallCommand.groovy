@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component
 
 @Component
 class UnInstallCommand implements CommandMarker {
-	@CliCommand(value = "uninstall", help = "Uninstalls a hash command")
-	def uninstall(
-			@CliOption(key = [ "name" ], mandatory = true, help = "The command name to uninstall") String name) {
-		println "Uninstalling command $name"
-	}
+    @CliCommand(value = "uninstall", help = "Uninstalls a hash command")
+    def uninstall(
+            @CliOption(key = [ "name" ], mandatory = true, help = "The command name to uninstall") String name) {
+        println "Uninstalling command $name"
+    }
 }
