@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 class InstallCommand implements CommandMarker {
     @CliCommand(value = "install", help = "Installs a hash command")
     def install(
-            @CliOption(key = ["name"], mandatory = true, help = "The command name to install") String name) {
+            @CliOption(key = ["name"], mandatory = true, help = "The command name to install") name) {
         println "Installing command $name"
     }
 }
