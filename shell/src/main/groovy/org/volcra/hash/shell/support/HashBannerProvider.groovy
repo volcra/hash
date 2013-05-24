@@ -24,8 +24,7 @@ import org.springframework.stereotype.Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class HashBannerProvider implements BannerProvider {
 
-    String getBanner() {
-        """\
+    final String banner = """\
 -------------------------------------------------------------------------------
                                 _       __ _          _ _
                  /\\  /\\__ _ ___| |__   / _\\ |__   ___| | |
@@ -35,17 +34,13 @@ class HashBannerProvider implements BannerProvider {
 
 -------------------------------------------------------------------------------
 """
-    }
 
-    String getVersion() {
-        "0.0.1-SNAPSHOT"
-    }
+    final String version = '0.0.1-SNAPSHOT'
 
-    String getWelcomeMessage() {
-        "Welcome to ${name()} ${getVersion()}.\nFor assistance press or type \"help\" then hit ENTER."
-    }
+    final String welcomeMessage =
+        "Welcome to ${name()} $version.\nFor assistance press or type \"help\" then hit ENTER."
 
     String name() {
-        "#Shell"
+        '#Shell'
     }
 }

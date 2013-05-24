@@ -26,8 +26,8 @@ class VersionCommand implements CommandMarker {
     @Autowired
     HashBannerProvider banner
 
-    @CliCommand("version")
-    def version() {
-        "${banner.name()} ${banner.getVersion()}"
+    @CliCommand(value = 'version', help = 'Prints out version information')
+    String version() {
+        "${banner.name()} $banner.version"
     }
 }
