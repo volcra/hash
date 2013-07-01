@@ -15,34 +15,14 @@
  */
 package org.volcra.hash.shell.commands
 
-import org.volcra.hash.shell.support.HashBannerProvider
-
 /**
- * Test class for {@link VersionCommand}.
+ * Test class for {@link SearchCommand}.
  */
-class VersionCommandTest extends GroovyTestCase {
+class SearchCommandTest extends GroovyTestCase {
     /**
-     * Test Fixture.
+     * Test method for {@link SearchCommand#execute(java.lang.String, java.lang.Boolean)}
      */
-    def command = new VersionCommand()
-
-    /**
-     * Expected version number.
-     */
-    // TODO move to a properties file or external source
-    static final VERSION = '0.0.1-SNAPSHOT'
-
-    /**
-     * Test set up.
-     */
-    void setUp() {
-        command.banner = [version: VERSION] as HashBannerProvider
-    }
-
-    /**
-     * Test method for {@link VersionCommand#version()}
-     */
-    void testVersion() {
-        assert "#Shell $VERSION" == command.version()
+    void testExecute() {
+        println new SearchCommand().execute('jquery', true)
     }
 }

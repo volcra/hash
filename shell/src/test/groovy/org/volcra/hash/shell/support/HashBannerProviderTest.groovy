@@ -15,22 +15,37 @@
  */
 package org.volcra.hash.shell.support
 
+/**
+ * Test class for {@link HashBannerProvider}.
+ */
 class HashBannerProviderTest extends GroovyTestCase {
     def provider = new HashBannerProvider()
 
+    /**
+     * Test method for {@lunk HashBannerProvider#banner}.
+     */
     void testBanner() {
         println provider.banner
     }
 
-    void testersion() {
+    /**
+     * Test method for {@link HashBannerProvider#getVersion()}.
+     */
+    void testVersion() {
         assert provider.version == '0.0.1-SNAPSHOT'
     }
 
+    /**
+     * Test method for {@link HashBannerProvider#getWelcomeMessage()}.
+     */
     void testWelcomeMessage() {
         assert provider.welcomeMessage ==
             "Welcome to ${provider.name()} $provider.version.\nFor assistance press or type \"help\" then hit ENTER."
     }
 
+    /**
+     * Test method for {@link HashBannerProvider#name()}
+     */
     void testName() {
         assert provider.name() == '#Shell'
     }

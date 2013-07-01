@@ -15,34 +15,18 @@
  */
 package org.volcra.hash.shell.commands
 
-import org.volcra.hash.shell.support.HashBannerProvider
+class InstallCommandTest extends GroovyTestCase {
+    def fixture = new InstallCommand(searchCommand: new SearchCommand(), gitCommand: new GitCommand())
 
-/**
- * Test class for {@link VersionCommand}.
- */
-class VersionCommandTest extends GroovyTestCase {
-    /**
-     * Test Fixture.
-     */
-    def command = new VersionCommand()
-
-    /**
-     * Expected version number.
-     */
-    // TODO move to a properties file or external source
-    static final VERSION = '0.0.1-SNAPSHOT'
-
-    /**
-     * Test set up.
-     */
     void setUp() {
-        command.banner = [version: VERSION] as HashBannerProvider
     }
 
     /**
-     * Test method for {@link VersionCommand#version()}
+     * Test method for {@link InstallCommand#install(java.lang.String, java.lang.String)}
      */
-    void testVersion() {
-        assert "#Shell $VERSION" == command.version()
+    void testInstall() {
+        fixture.install 'jquery', null
+        fixture.install 'coffee-script', null
+        fixture.install 'modernizr', null
     }
 }

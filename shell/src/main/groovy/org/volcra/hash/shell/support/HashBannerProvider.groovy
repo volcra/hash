@@ -15,15 +15,25 @@
  */
 package org.volcra.hash.shell.support
 
+import groovy.transform.CompileStatic
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.shell.plugin.BannerProvider
 import org.springframework.stereotype.Component
 
+/**
+ * Banner Provider.
+ *
+ * @author Emanuelle Gardu&ntilde;o
+ */
 @Component
+@CompileStatic
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class HashBannerProvider implements BannerProvider {
 
+    /**
+     * Hash Shell banner.
+     */
     final String banner = """\
 -------------------------------------------------------------------------------
                                 _       __ _          _ _
@@ -35,11 +45,21 @@ class HashBannerProvider implements BannerProvider {
 -------------------------------------------------------------------------------
 """
 
+    /**
+     * Version.
+     */
     final String version = '0.0.1-SNAPSHOT'
 
+    /**
+     * Welcome Message.
+     */
     final String welcomeMessage =
         "Welcome to ${name()} $version.\nFor assistance press or type \"help\" then hit ENTER."
 
+    /**
+     * Name of this plugin.
+     * @return "#Shell"
+     */
     String name() {
         '#Shell'
     }

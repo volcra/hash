@@ -15,16 +15,31 @@
  */
 package org.volcra.hash.shell.commands
 
+import groovy.transform.CompileStatic
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
 
+/**
+ * Uninstalls a package.
+ *
+ * @author Emanuelle Gardu&ntilde;o
+ */
 @Component
+@CompileStatic
 class UnInstallCommand implements CommandMarker {
-    @CliCommand(value = 'uninstall', help = 'Uninstalls a hash command')
-    void uninstall(
-            @CliOption(key = ['name'], mandatory = true, help = 'The command name to uninstall') String name) {
-        println "Uninstalling command $name"
+    /**
+     * Uninstalls a package. If version is not given it will uninstall the only version available in the components.
+     * @param name name of the package
+     * @param version version to uninstall
+     * @return confirmation message
+     */
+    @CliCommand(value = 'uninstall', help = 'Uninstalls a package')
+    String uninstall(
+            @CliOption(key = ['name'], mandatory = true, help = 'The command name to uninstall') String name,
+            @CliOption(key = 'version', help = 'Package version, if not provided will use default or master branch')
+            String version) {
+        "Uninstalling command $name"
     }
 }

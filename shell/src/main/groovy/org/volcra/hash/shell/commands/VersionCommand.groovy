@@ -15,17 +15,31 @@
  */
 package org.volcra.hash.shell.commands
 
+import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.stereotype.Component
 import org.volcra.hash.shell.support.HashBannerProvider
 
+/**
+ * Prints out version information.
+ *
+ * @author Emanuelle Gardu&ntilde;o
+ */
 @Component
+@CompileStatic
 class VersionCommand implements CommandMarker {
+    /**
+     * Reference to {@link HashBannerProvider} to provide name and version fields.
+     */
     @Autowired
     HashBannerProvider banner
 
+    /**
+     * Prints out version information.
+     * @return "${banner.name()} $banner.version"
+     */
     @CliCommand(value = 'version', help = 'Prints out version information')
     String version() {
         "${banner.name()} $banner.version"

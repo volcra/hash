@@ -15,18 +15,35 @@
  */
 package org.volcra.hash.shell.support
 
+import groovy.transform.CompileStatic
+import org.springframework.beans.factory.InitializingBean
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.shell.plugin.HistoryFileNameProvider
 import org.springframework.stereotype.Component
 
+/**
+ * History File Name Provider.
+ */
 @Component
+@CompileStatic
 @Order(Ordered.HIGHEST_PRECEDENCE)
-class HashHistoryFileNameProvider implements HistoryFileNameProvider {
+class HashHistoryFileNameProvider implements HistoryFileNameProvider, InitializingBean {
+    /**
+     * Name of the history file.
+     */
+    final String historyFileName = '.hash/hash-shell.log'
 
-    final String historyFileName = 'hash-shell.log'
-
+    /**
+     * Name of this plugin.
+     * @return "hash shell file name provider"
+     */
     String name() {
         'hash shell file name provider'
+    }
+
+    @Override
+    void afterPropertiesSet() throws Exception {
+        new File(historyFileName).mkdir()
     }
 }

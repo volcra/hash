@@ -15,20 +15,32 @@
  */
 package org.volcra.hash.shell.support
 
+import groovy.transform.CompileStatic
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.shell.plugin.PromptProvider
 import org.springframework.stereotype.Component
 
+/**
+ * Prompt Provider Implementation.
+ *
+ * <p>Set prompt to {@code # >}</p>
+ *
+ * @author Emanuelle Gardu&ntilde;o
+ */
 @Component
+@CompileStatic
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class HashPromptProvider implements PromptProvider {
 
-    final String prompt = '#>'
+    /**
+     * Prompt value #>.
+     */
+    String prompt = '#>'
 
     /**
      * The name of this plugin.
-     * @return
+     * @return the name of the plugin
      */
     String name() {
         '# prompt provider'
