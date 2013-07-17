@@ -30,9 +30,14 @@ import org.springframework.stereotype.Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class HashHistoryFileNameProvider implements HistoryFileNameProvider, InitializingBean {
     /**
+     * Directory name.
+     */
+    final static String HISTORY_DIRECTORY = '.hash'
+
+    /**
      * Name of the history file.
      */
-    final String historyFileName = '.hash/hash-shell.log'
+    final String historyFileName = "$HISTORY_DIRECTORY/hash-shell.log"
 
     /**
      * Name of this plugin.
@@ -42,8 +47,14 @@ class HashHistoryFileNameProvider implements HistoryFileNameProvider, Initializi
         'hash shell file name provider'
     }
 
+    /**
+     * Creates the directory and log file in case hey don't exist.
+     *
+     * @throws Exception
+     */
     @Override
     void afterPropertiesSet() throws Exception {
-        new File(historyFileName).mkdir()
+        new File(HISTORY_DIRECTORY).mkdirs()
+        new File(historyFileName).createNewFile()
     }
 }

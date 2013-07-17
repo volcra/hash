@@ -37,9 +37,7 @@ class UnInstallCommand implements CommandMarker {
      */
     @CliCommand(value = 'uninstall', help = 'Uninstalls a package')
     String uninstall(
-            @CliOption(key = ['name'], mandatory = true, help = 'The command name to uninstall') String name,
-            @CliOption(key = 'version', help = 'Package version, if not provided will use default or master branch')
-            String version) {
+            @CliOption(key = ['name'], mandatory = true, help = 'The command name to uninstall') String name) {
         "Uninstalling command $name"
     }
 }

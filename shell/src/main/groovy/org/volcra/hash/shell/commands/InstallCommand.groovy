@@ -66,7 +66,7 @@ class InstallCommand implements CommandMarker {
             process checkout(name, matches[0].website as String, version)
             stopWatch.stop()
 
-            "Package $name installed in ${stopWatch.shortSummary()}"
+            "Package $name installed in ${stopWatch.totalTimeSeconds}"
         }
     }
 

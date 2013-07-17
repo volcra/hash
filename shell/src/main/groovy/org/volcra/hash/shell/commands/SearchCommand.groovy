@@ -2,7 +2,6 @@ package org.volcra.hash.shell.commands
 
 import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
-import org.springframework.cache.annotation.Cacheable
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
@@ -27,13 +26,14 @@ class SearchCommand implements CommandMarker {
      * The bower registry.
      */
     // TODO move to a Registry implementation
-    final static String ENDPOINT = 'https://bower-component-list.herokuapp.com/'
-    final static Map CACHE = [:]
+    private final static String ENDPOINT = 'https://bower-component-list.herokuapp.com/'
+    private final static Map CACHE = [:]
+    private final static String BOWER = 'bower'
 
     @CompileStatic
     static String bowerComponentList() {
-        if (CACHE.containsKey('bower')) CACHE['bower']
-        else CACHE['bower'] = new RestTemplate().getForObject(ENDPOINT, String)
+        if (CACHE.containsKey(BOWER)) CACHE[BOWER]
+        else CACHE[BOWER] = new RestTemplate().getForObject(ENDPOINT, String)
     }
 
     /**
