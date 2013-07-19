@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate
 
 /**
  *
- * @author 501230882
+ * @author Emanuelle Gardu&ntilde;o
  */
 @Repository
 class BowerRegistryImpl implements BowerRegistry {

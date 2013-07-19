@@ -17,7 +17,7 @@ package org.volcra.hash.shell.bower
 
 /**
  *
- * @author 501230882
+ * @author Emanuelle Gardu&ntilde;o
  */
 class BowerPackage {
     /**
