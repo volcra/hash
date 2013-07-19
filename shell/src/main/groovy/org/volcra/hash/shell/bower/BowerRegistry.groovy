@@ -13,24 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.volcra.hash.shell
-
-import groovy.transform.CompileStatic
-import org.springframework.shell.Bootstrap
+package org.volcra.hash.shell.bower
 
 /**
- * Main class.
+ * Bower Registry Interface.
  *
- * <p>Mainly delegates to {@code Boostrap}.
+ * @author Emanuelle Gardu&ntilde;o
  */
-@CompileStatic
-class Main {
+interface BowerRegistry {
     /**
-     * Main method.
+     * Finds a package in the bower registry.
      *
-     * @param args command line arguments
+     * @param name name of the package in the bower registry
+     * @return the package found
      */
-    static void main(String... args) {
-        Bootstrap.main args
-    }
+    def find(String name)
+
+    /**
+     * Finds a package from the bower registry by providing a filter closure.
+     *
+     * @param filter closure
+     * @return an Iterable
+     */
+    Iterable find(Closure filter)
 }

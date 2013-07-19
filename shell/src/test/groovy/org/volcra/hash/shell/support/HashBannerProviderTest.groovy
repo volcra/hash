@@ -17,6 +17,8 @@ package org.volcra.hash.shell.support
 
 /**
  * Test class for {@link HashBannerProvider}.
+ *
+ * @author Emanuelle Gardu&ntilde;o
  */
 class HashBannerProviderTest extends GroovyTestCase {
     def provider = new HashBannerProvider()

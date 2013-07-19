@@ -19,6 +19,8 @@ import org.volcra.hash.shell.support.HashBannerProvider
 
 /**
  * Test class for {@link VersionCommand}.
+ *
+ * @author Emanuelle Gardu&ntilde;o
  */
 class VersionCommandTest extends GroovyTestCase {
     /**

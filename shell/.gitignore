@@ -5,6 +5,7 @@ target/*
 .gradle/*
 *.log
 *.bat
+out/
 
 #clipse
 .project
@@ -13,6 +14,9 @@ target/*
 bin/
 .idea/
 *.iml
+*.ipr
+*.iws
 
 .hash/
+components/
 

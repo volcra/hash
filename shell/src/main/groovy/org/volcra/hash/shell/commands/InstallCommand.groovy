@@ -1,14 +1,14 @@
 /*
  * Copyright 2013 Volcra
  *
- * Licensed under the Apache License, Version 2.0 (the 'License');
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -17,7 +17,6 @@ package org.volcra.hash.shell.commands
 
 import groovy.io.FileType
 import groovy.json.JsonSlurper
-import groovy.transform.CompileStatic
 import org.apache.commons.io.FileUtils
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.storage.file.FileRepository
@@ -28,6 +27,8 @@ import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
 import org.springframework.util.StopWatch
 
+import org.volcra.hash.shell.bower.BowerRegistry
+
 /**
  * Package Installer.
  *
@@ -37,8 +38,11 @@ import org.springframework.util.StopWatch
  */
 @Component
 class InstallCommand implements CommandMarker {
+    /**
+     * Bower Registry.
+     */
     @Autowired
-    SearchCommand searchCommand
+    BowerRegistry bower
 
     /**
      * Helper class to clone the repository.
@@ -59,17 +63,23 @@ class InstallCommand implements CommandMarker {
                     unspecifiedDefaultValue = 'latest') String version) {
         def stopWatch = new StopWatch()
         stopWatch.start()
-        def matches = searchCommand.search name
+        def pkg = bower.find name
 
-        if (matches.isEmpty()) "Package $name not found"
-        else {
-            process checkout(name, matches[0].website as String, version)
+        if (pkg) {
+            process checkout(name, pkg.website as String, version)
             stopWatch.stop()
 
-            "Package $name installed in ${stopWatch.totalTimeSeconds}"
-        }
+            "Package $name installed in ${stopWatch.totalTimeSeconds} seconds"
+        } else 
+            "Package $name not found"
     }
 
+    /**
+     * Processes the git repository looking for JSON files matching (bower|component) and extracting the main
+     * to the components folder.
+     *
+     * @param git repository
+     */
     private void process(Git git) {
         def slurper = new JsonSlurper()
         def repository = git.repository.directory.parentFile
@@ -77,37 +87,57 @@ class InstallCommand implements CommandMarker {
 
         components.mkdirs()
 
-        repository.eachFileMatch(FileType.FILES, ~/(bower|component|package)\.json/) {
+        repository.eachFileMatch(FileType.FILES, ~/(bower|component)\.json/) {
             println it.name
             def json = slurper.parseText it.text
-            println "+-- ${json.main}"
-            def f = new File(repository, json.main as String)
-            if (f.exists())
-                if (f.isDirectory()) FileUtils.copyDirectory f, components
-                else FileUtils.copyFileToDirectory f, components
+
+            if (json.dependencies) {
+                json.dependencies.each {
+                    println "${it.key}->${it.value}"
+                    install it.key as String, null
+                }
+            }
+
+            if (json.main) {
+                println "+-- ${json.main}"
+
+                json.main.each { String main ->
+                    def f = new File(repository, main)
+                    if (f.exists()) {
+                        println "copying $f.name"
+                        if (f.isDirectory()) FileUtils.copyDirectory f, components
+                        else FileUtils.copyFileToDirectory f, components
+                    }
+                }
+            }
         }
     }
 
-    @CompileStatic
-    private Git checkout(String name, String uri, String version) {
-        def git = getRepository(name, uri)
-        def checkout = git.checkout()
+    /**
+     * Checks outs the given {@code version} from the repository {@code name} with {@code version} using latest as
+     * default.
+     *
+     * @param name repository name
+     * @param url repository url
+     * @param version version to checkout, latest by default
+     * @return a reference to the Git repository
+     */
+    private Git checkout(String name, String url, String version) {
+        def git = getRepository name, url
         def tag = version == null || version == 'latest' ? git.tagList().call().last().name : version
 
-        checkout.name = tag
-        git.fetch().call()
-        checkout.call()
+        git.fetch() call()
+        git.checkout() setName tag call()
         git
     }
 
     /**
      * Clones a repository or returns an existing repository.
      *
-     * @param name
-     * @param url
-     * @return
+     * @param name repository name
+     * @param url repository url
+     * @return the Git Repository
      */
-    @CompileStatic
     private Git getRepository(String name, String url) {
         def repository = new File(".hash/$name/.git")
 

@@ -1,12 +1,26 @@
+/*
+ * Copyright 2013 Volcra
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.volcra.hash.shell.commands
 
-import groovy.json.JsonSlurper
-import groovy.transform.CompileStatic
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
-import org.springframework.web.client.RestTemplate
+import org.volcra.hash.shell.bower.BowerRegistry
 
 /**
  * Search command.
@@ -22,19 +36,8 @@ import org.springframework.web.client.RestTemplate
  */
 @Component
 class SearchCommand implements CommandMarker {
-    /**
-     * The bower registry.
-     */
-    // TODO move to a Registry implementation
-    private final static String ENDPOINT = 'https://bower-component-list.herokuapp.com/'
-    private final static Map CACHE = [:]
-    private final static String BOWER = 'bower'
-
-    @CompileStatic
-    static String bowerComponentList() {
-        if (CACHE.containsKey(BOWER)) CACHE[BOWER]
-        else CACHE[BOWER] = new RestTemplate().getForObject(ENDPOINT, String)
-    }
+    @Autowired
+    BowerRegistry bowerRegistry
 
     /**
      * Searches for packages in the registry.
@@ -67,27 +70,12 @@ class SearchCommand implements CommandMarker {
     String execute(@CliOption(key = ['name', ''], mandatory = true, help = 'The name of the package') String name,
                    @CliOption(key = 'contains', help = 'Whether to do a contains search or not',
                            specifiedDefaultValue = 'true') Boolean contains) {
-        def matches = search(name, contains ?: false)
+        def matches = bowerRegistry.find contains ? { it.name.contains name } : { it.name == name }
 
         matches.each {
             println sprintf('%-20.20s %s', it.name.size() > 20 ? "${it.name[0..16]}..." : it.name, it.website)
         }
 
         "Found ${matches.size()} results"
-    }
-
-    /**
-     * Searches by package name with optional argument contains.
-     *
-     * @param name the package name
-     * @param contains whether it is a contains search or not
-     * @return the list of matching result
-     */
-    // TODO Move to a Registry interface
-    // TODO the registry implementation should be able to cache the JSON response
-    List search(String name, boolean contains = false) {
-        def result = new JsonSlurper().parseText bowerComponentList()
-        def matching = contains ? { it.name.contains name } : { it.name == name }
-        result.findAll matching
     }
 }

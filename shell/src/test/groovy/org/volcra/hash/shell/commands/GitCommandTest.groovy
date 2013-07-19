@@ -15,10 +15,17 @@
  */
 package org.volcra.hash.shell.commands
 
-
+/**
+ * Test class for {#link GitCommand}.
+ *
+ * @author Emanuelle Gardu&ntilde;o
+ */
 class GitCommandTest extends GroovyTestCase {
     def fixture = new GitCommand()
 
+    /**
+     * Test method for {@link GitCommand#clone(java.lang.String, java.io.File)}.
+     */
     void testClone() {
         fixture.execute 'git@github.com:volcra/hash-coffee.git', null
     }

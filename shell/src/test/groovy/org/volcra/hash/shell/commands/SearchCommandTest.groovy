@@ -17,6 +17,8 @@ package org.volcra.hash.shell.commands
 
 /**
  * Test class for {@link SearchCommand}.
+ *
+ * @author Emanuelle Gardu&ntilde;o
  */
 class SearchCommandTest extends GroovyTestCase {
     /**

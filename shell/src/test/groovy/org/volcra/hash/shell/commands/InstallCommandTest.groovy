@@ -15,10 +15,29 @@
  */
 package org.volcra.hash.shell.commands
 
-class InstallCommandTest extends GroovyTestCase {
-    def fixture = new InstallCommand(searchCommand: new SearchCommand(), gitCommand: new GitCommand())
+import org.volcra.hash.shell.spring.AppConfig
 
+/**
+ * Test class for {@link InstallCommand}.
+ *
+ * @author Emanuelle Gardu&ntilde;o
+ */
+class InstallCommandTest extends GroovyTestCase {
+    /**
+     * Test fixture.
+     */
+    InstallCommand fixture
+
+    /**
+     * Set up.
+     */
     void setUp() {
+        System.setProperty 'http.proxyHost', 'proxy-http.genworth.net'
+
+        def spring = new AppConfig()
+
+        fixture = new InstallCommand(searchCommand: new SearchCommand(restTemplate: spring.restTemplate),
+                gitCommand: new GitCommand())
     }
 
     /**

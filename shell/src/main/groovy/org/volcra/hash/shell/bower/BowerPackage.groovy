@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.volcra.hash.shell
-
-import groovy.transform.CompileStatic
-import org.springframework.shell.Bootstrap
+package org.volcra.hash.shell.bower
 
 /**
- * Main class.
  *
- * <p>Mainly delegates to {@code Boostrap}.
+ * @author 501230882
  */
-@CompileStatic
-class Main {
+class BowerPackage {
     /**
-     * Main method.
-     *
-     * @param args command line arguments
+     * Package name.
      */
-    static void main(String... args) {
-        Bootstrap.main args
-    }
+    String name
+
+    /**
+     * Git Repository
+     */
+    String website
+
+    /**
+     * Version.
+     */
+    String version
 }
