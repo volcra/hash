@@ -18,5 +18,5 @@ bin/
 *.iws
 
 .hash/
-components/
+bower_components/
 

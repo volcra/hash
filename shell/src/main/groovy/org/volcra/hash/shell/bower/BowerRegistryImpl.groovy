@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository
 import org.springframework.web.client.RestTemplate
 
 /**
+ * Connects to the {@link BowerRegistryImpl#endpoint} to get all available packages.
  *
  * @author Emanuelle Gardu&ntilde;o
  */
@@ -41,7 +42,7 @@ class BowerRegistryImpl implements BowerRegistry {
      * Bower endpoint.
      */
     @Value("#{shellProperties['bower.url']}")
-    String endpoint
+    URI endpoint
 
     /**
      * Rest Template to call Bower.
@@ -54,7 +55,7 @@ class BowerRegistryImpl implements BowerRegistry {
      *
      * @return JSON response as String
      */
-    private String bowerComponentList() {
+    private bowerComponentList() {
         if (CACHE.containsKey(BOWER)) CACHE[BOWER]
         else CACHE[BOWER] = restTemplate.getForObject endpoint, String
     }

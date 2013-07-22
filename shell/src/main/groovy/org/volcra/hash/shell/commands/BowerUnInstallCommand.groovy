@@ -29,17 +29,28 @@ import org.springframework.stereotype.Component
  */
 @Component
 @CompileStatic
-class UnInstallCommand implements CommandMarker {
+class BowerUnInstallCommand implements CommandMarker {
+    /**
+     * Components root folder.
+     */
+    @Value("#{shellProperties['components.dir']}")
+    File components
+
     /**
      * Uninstalls a package.
      *
      * @param name name of the package
      * @return confirmation message
      */
-    @CliCommand(value = 'uninstall', help = 'Uninstalls a package')
+    @CliCommand(value = 'bower uninstall', help = 'Remove a package')
     String uninstall(
-            @CliOption(key = ['name'], mandatory = true, help = 'The command name to uninstall') String name) {
+            @CliOption(key = ['name', ''], mandatory = true, help = 'The package to remove') String name) {
+        def pkg = new File(components, name)
 
-        "Uninstalling command $name"
+        if (pkg.exists()) {
+            pkg.deleteDir()
+            "Package $name deleted"
+        } else
+            "Package $name is not installed. You may use bower list to show all current installed packages"
     }
 }

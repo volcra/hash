@@ -18,15 +18,15 @@ package org.volcra.hash.shell.commands
 import org.volcra.hash.shell.spring.AppConfig
 
 /**
- * Test class for {@link InstallCommand}.
+ * Test class for {@link BowerInstallCommand}.
  *
  * @author Emanuelle Gardu&ntilde;o
  */
-class InstallCommandTest extends GroovyTestCase {
+class BowerInstallCommandTest extends GroovyTestCase {
     /**
      * Test fixture.
      */
-    InstallCommand fixture
+    BowerInstallCommand fixture
 
     /**
      * Set up.
@@ -36,12 +36,12 @@ class InstallCommandTest extends GroovyTestCase {
 
         def spring = new AppConfig()
 
-        fixture = new InstallCommand(searchCommand: new SearchCommand(restTemplate: spring.restTemplate),
+        fixture = new BowerInstallCommand(searchCommand: new BowerSearchCommand(restTemplate: spring.restTemplate),
                 gitCommand: new GitCommand())
     }
 
     /**
-     * Test method for {@link InstallCommand#install(java.lang.String, java.lang.String)}
+     * Test method for {@link BowerInstallCommand#install(java.lang.String, java.lang.String)}
      */
     void testInstall() {
         fixture.install 'jquery', null

@@ -21,7 +21,7 @@ import org.springframework.shell.Bootstrap
 /**
  * Main class.
  *
- * <p>Mainly delegates to {@code Boostrap}.
+ * <p>Mainly delegates to {@code Bootstrap}.
  */
 @CompileStatic
 class Main {
@@ -30,6 +30,7 @@ class Main {
      *
      * @param args command line arguments
      */
+    // TODO in future releases, plan to have direct access to the Command without using Spring shell
     static void main(String... args) {
         Bootstrap.main args
     }

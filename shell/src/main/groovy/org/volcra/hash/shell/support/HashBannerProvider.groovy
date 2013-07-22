@@ -48,6 +48,7 @@ class HashBannerProvider implements BannerProvider {
     /**
      * Version.
      */
+    // TODO move to external file
     final String version = '0.0.1-SNAPSHOT'
 
     /**

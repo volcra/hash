@@ -16,15 +16,15 @@
 package org.volcra.hash.shell.commands
 
 /**
- * Test class for {@link SearchCommand}.
+ * Test class for {@link BowerSearchCommand}.
  *
  * @author Emanuelle Gardu&ntilde;o
  */
-class SearchCommandTest extends GroovyTestCase {
+class BowerSearchCommandTest extends GroovyTestCase {
     /**
-     * Test method for {@link SearchCommand#execute(java.lang.String, java.lang.Boolean)}
+     * Test method for {@link BowerSearchCommand#execute(java.lang.String, java.lang.Boolean)}
      */
     void testExecute() {
-        println new SearchCommand().execute('jquery', true)
+        println new BowerSearchCommand().execute('jquery', true)
     }
 }

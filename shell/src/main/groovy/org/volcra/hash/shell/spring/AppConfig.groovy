@@ -28,7 +28,7 @@ import org.springframework.web.client.RestTemplate
 @Configuration
 class AppConfig {
     /**
-     * http.proxyHost key name to retrieve from propeties.
+     * http.proxyHost key name to retrieve from properties.
      */
     private static final String HTTP_PROXY_HOST = 'http.proxyHost'
 
