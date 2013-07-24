@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.volcra.hash.shell.commands
+package org.volcra.hash.shell.bower.commands
 
 import groovy.io.FileType
 import groovy.json.JsonSlurper
 import groovy.util.logging.Log
 import org.apache.commons.io.FileUtils
-import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.storage.file.FileRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.shell.core.CommandMarker
@@ -28,8 +26,8 @@ import org.springframework.shell.core.HashColorLogger
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
-import org.springframework.util.StopWatch
 import org.volcra.hash.shell.bower.BowerRegistry
+import org.volcra.hash.shell.git.GitRepository
 
 /**
  * Package Installer.
@@ -59,12 +57,6 @@ class BowerInstallCommand implements CommandMarker {
     BowerRegistry bower
 
     /**
-     * Helper class to clone the repository.
-     */
-    @Autowired
-    GitCommand gitCommand
-
-    /**
      * Utility class to log to the console with colors.
      */
     @Autowired
@@ -78,36 +70,41 @@ class BowerInstallCommand implements CommandMarker {
      */
     // TODO Bower supports multiple patterns for package names, implement
     @CliCommand(value = 'bower install', help = 'Install a package locally')
-    String install(
+    void install(
             @CliOption(key = ['name', ''], mandatory = true, help = 'The package name to install') String name,
             @CliOption(key = 'version', help = 'Package version, if not provided will use default or master branch',
                     unspecifiedDefaultValue = 'latest') String version) {
-        def stopWatch = new StopWatch()
-        stopWatch.start()
         def pkg = bower.find name
 
         if (pkg) {
-            process name, checkout(name, pkg.website as String, version)
-            stopWatch.stop()
-
-            "Package $name installed in ${stopWatch.totalTimeSeconds} seconds"
+            process name, version, pkg
+            colorLogger.cyan name green ' installed' printNewline()
         } else
-            "Package $name not found"
+            colorLogger.cyan name yellow ' was not found' printNewline()
     }
 
     /**
-     * Processes the git repository looking for JSON files matching (bower|component) and extracting the main
-     * to the components folder.
+     * Processes the git repository looking for JSON files matching (bower|component) and copying the content of the
+     * repository to that folder.
      *
      * @param git repository
      */
-    private void process(String name, Git git) {
-        def slurper = new JsonSlurper()
+    private void process(String name, String version, pkg) {
+        colorLogger.log BOWER_CMD_OUT cyan 'cloning ' log pkg.website printNewline()
+        def git = new GitRepository(name, pkg.website as String, new File(".hash/$name"))
+        def tag = version == null || version == 'latest' ? git.tagList().last().name : version
+
+        colorLogger.log BOWER_CMD_OUT cyan 'fetching ' log name printNewline()
+        git.fetch()
+        colorLogger.log BOWER_CMD_OUT cyan 'checking out ' log "$name#$tag" printNewline()
+        git.checkout tag
+
         def repository = git.repository.directory.parentFile
         def component = new File(components, repository.name)
 
         component.mkdirs()
 
+        def slurper = new JsonSlurper()
         repository.eachFileMatch(FileType.FILES, ~/(bower|component)\.json/) {
             def json = slurper.parseText it.text
 
@@ -118,44 +115,8 @@ class BowerInstallCommand implements CommandMarker {
                 }
         }
 
-
-        colorLogger.log BOWER_CMD_OUT cyan 'installing ' log "$name#$git.repository.branch" printNewline()
+        colorLogger.log BOWER_CMD_OUT cyan 'installing ' log "$name#$git.repository.fullBranch" printNewline()
         FileUtils.copyDirectory repository, component
         FileUtils.deleteDirectory new File(component, '.git')
-    }
-
-    /**
-     * Checks outs the given {@code version} from the repository {@code name} with {@code version} using latest as
-     * default.
-     *
-     * @param name repository name
-     * @param url repository url
-     * @param version version to checkout, latest by default
-     * @return a reference to the Git repository
-     */
-    private Git checkout(String name, String url, String version) {
-        colorLogger.log BOWER_CMD_OUT cyan 'cloning ' log url printNewline()
-        def git = getRepository name, url
-        def tag = version == null || version == 'latest' ? git.tagList().call().last().name : version
-
-        colorLogger.log BOWER_CMD_OUT cyan 'fetching ' log name printNewline()
-        git.fetch() call()
-        colorLogger.log BOWER_CMD_OUT cyan 'checking out ' log "$name#$tag" printNewline()
-        git.checkout() setName tag call()
-        git
-    }
-
-    /**
-     * Clones a repository or returns an existing repository.
-     *
-     * @param name repository name
-     * @param url repository url
-     * @return the Git Repository
-     */
-    private Git getRepository(String name, String url) {
-        def repository = new File(".hash/$name/.git")
-
-        if (repository.exists()) new Git(new FileRepository(repository))
-        else gitCommand.clone "${url}.git", null
     }
 }

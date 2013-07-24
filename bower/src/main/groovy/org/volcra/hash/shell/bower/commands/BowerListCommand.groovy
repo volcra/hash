@@ -1,4 +1,4 @@
-package org.volcra.hash.shell.commands
+package org.volcra.hash.shell.bower.commands
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.shell.core.CommandMarker

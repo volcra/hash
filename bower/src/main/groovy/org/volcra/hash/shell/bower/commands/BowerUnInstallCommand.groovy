@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.volcra.hash.shell.commands
+package org.volcra.hash.shell.bower.commands
 
 import groovy.transform.CompileStatic
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.shell.core.CommandMarker
+import org.springframework.shell.core.HashColorLogger
 import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
@@ -37,20 +39,27 @@ class BowerUnInstallCommand implements CommandMarker {
     File components
 
     /**
+     * Utility class to log to the console with colors.
+     */
+    @Autowired
+    HashColorLogger colorLogger
+
+    /**
      * Uninstalls a package.
      *
      * @param name name of the package
      * @return confirmation message
      */
     @CliCommand(value = 'bower uninstall', help = 'Remove a package')
-    String uninstall(
-            @CliOption(key = ['name', ''], mandatory = true, help = 'The package to remove') String name) {
+    void uninstall(
+            @CliOption(key = ['name', ''], mandatory = true, help = 'The package to delete') String name) {
         def pkg = new File(components, name)
 
         if (pkg.exists()) {
             pkg.deleteDir()
-            "Package $name deleted"
+
+            colorLogger.cyan name green ' deleted' printNewline()
         } else
-            "Package $name is not installed. You may use bower list to show all current installed packages"
+            colorLogger.cyan name yellow ' is not installed. You may use bower list to show all installed packages'
     }
 }

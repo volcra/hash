@@ -1,0 +1,10 @@
+description = 'Core'
+
+repositories {
+    maven { url 'http://spring-roo-repository.springsource.org/release' }
+}
+
+dependencies {
+	compile "org.springframework.shell:spring-shell:$springShellVersion"
+	compile 'org.eclipse.jgit:org.eclipse.jgit:2.3.1.201302201838-r'
+}

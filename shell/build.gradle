@@ -1,25 +1,11 @@
-apply plugin: 'groovy'
 apply plugin: 'application'
 apply plugin: 'codenarc'
-apply plugin: 'idea'
 
 description = 'Hash Shell'
 mainClassName = 'org.volcra.hash.shell.Main'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
 repositories {
-    mavenCentral()
     maven { url 'http://spring-roo-repository.springsource.org/release' }
-}
-
-configurations {
-    all*.exclude module: 'commons-logging'
-}
-
-tasks.withType(GroovyCompile) {
-    groovyOptions.optimizationOptions.indy = true
 }
 
 idea {
@@ -36,9 +22,10 @@ startScripts {
 dependencies {
     compile "org.springframework.shell:spring-shell:$springShellVersion"
     compile "org.springframework:spring-web:$springVersion"
-    compile "org.codehaus.groovy:groovy-all:$groovyVersion:indy"
     compile "org.eclipse.jgit:org.eclipse.jgit:2.3.1.201302201838-r"
     compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+
+    compile project(':bower')
 
     runtime "org.slf4j:slf4j-log4j12:$slf4jVersion"
     runtime "log4j:log4j:$log4jVersion"
@@ -47,6 +34,4 @@ dependencies {
     testCompile 'junit:junit:4.11'
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.6'
-}
+assemble.dependsOn installApp

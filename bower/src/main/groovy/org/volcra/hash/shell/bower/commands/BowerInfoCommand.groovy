@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.volcra.hash.shell.commands
+package org.volcra.hash.shell.bower.commands
 
+import org.eclipse.jgit.lib.Ref
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
 import org.springframework.shell.core.HashColorLogger
@@ -22,14 +23,16 @@ import org.springframework.shell.core.annotation.CliCommand
 import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
 import org.volcra.hash.shell.bower.BowerRegistry
+import org.volcra.hash.shell.git.GitRepository
 
 /**
- * Bower Lookup command.
+ * Version info and description of a particular package
  *
  * @author Emanuelle Gardu&ntilde;o
  */
 @Component
-class BowerLookupCommand implements CommandMarker {
+class BowerInfoCommand implements CommandMarker {
+
     /**
      * Bower Registry.
      */
@@ -42,16 +45,20 @@ class BowerLookupCommand implements CommandMarker {
     @Autowired
     HashColorLogger colorLogger
 
-    /**
-     * Look up a package URL by name.
-     *
-     * @param name package name
-     */
-    @CliCommand(value = 'bower lookup', help = 'Look up a package URL by name')
-    void lookup(@CliOption(key = ['name', ''], mandatory = true, help = 'The package name to lookup') String name) {
+    @CliCommand(value = 'bower info', help = 'Version info and description of a particular package')
+    void info(@CliOption(key = ['name', ''], mandatory = true, help = 'Package name') String name) {
         def pkg = bower.find name
 
-        if (pkg) colorLogger.cyan "$pkg.name " log pkg.website printNewline()
-        else colorLogger.cyan name yellow ' was not found' printNewline()
+        if (pkg) {
+            def gitRepository = new GitRepository(pkg.name as String, pkg.website as String, new File(".hash/$name"))
+
+            colorLogger.cyan name printNewline()
+            println '\nVersions: '
+
+            gitRepository.tagList().each { Ref ref ->
+                println "- ${ref.name.substring(ref.name.lastIndexOf('/') + 1)}"
+            }
+        } else
+            colorLogger.cyan name yellow ' was not found' printNewline()
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.volcra.hash.shell.commands
+package org.volcra.hash.shell.bower.commands
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.shell.core.CommandMarker
@@ -67,15 +67,13 @@ class BowerSearchCommand implements CommandMarker {
      * @return a message showing the number of findings
      */
     @CliCommand(value = 'bower search', help = 'Searches for packages in the repository')
-    String execute(@CliOption(key = ['name', ''], mandatory = true, help = 'The name of the package') String name) {
+    void execute(@CliOption(key = ['name', ''], mandatory = true, help = 'The name of the package') String name) {
         def matches = bowerRegistry.find { it.name.contains name }
 
         if (matches) {
             println 'Search results:\n'
 
             matches.each { colorLogger.cyan "    $it.name " log "$it.website" printNewline() }
-
-            ''
         } else
             colorLogger.yellow 'No results' printNewline()
     }

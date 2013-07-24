@@ -1,0 +1,31 @@
+allprojects {
+    apply plugin: 'idea'
+
+    repositories { 
+        mavenCentral() 
+    }
+}
+
+subprojects {
+    apply plugin: 'groovy'
+
+    group = 'org.volcra.hash'
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    configurations {
+        all*.exclude module: 'commons-logging'
+    }
+
+    tasks.withType(GroovyCompile) {
+        groovyOptions.optimizationOptions.indy = true
+    }
+
+    dependencies {
+        compile "org.codehaus.groovy:groovy-all:$groovyVersion:indy"
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.6'
+}
