@@ -22,7 +22,7 @@ import org.eclipse.jgit.storage.file.FileRepository
 
 /**
  *
- * @author 501230882
+ * @author Emanuelle Gardu&ntilde;o
  */
 class GitRepository {
     private Git git
