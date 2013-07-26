@@ -13,25 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.volcra.hash.shell.bower
+package org.volcra.hash.shell.addon.bower
 
 /**
  *
  * @author Emanuelle Gardu&ntilde;o
  */
-class BowerPackage {
-    /**
-     * Package name.
-     */
-    String name
+interface BowerOperations {
+    void info(String name)
 
-    /**
-     * Git Repository
-     */
-    String website
+    void install(String name, String version)
 
-    /**
-     * Version.
-     */
-    String version
+    void list()
+
+    void lookup(String name)
+
+    void search(String name)
+
+    void uninstall(String name)
 }

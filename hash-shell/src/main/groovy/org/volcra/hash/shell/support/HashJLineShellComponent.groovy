@@ -41,7 +41,6 @@ class HashJLineShellComponent extends JLineShellComponent {
 
     @Override
     protected ConsoleReader createConsoleReader() {
-        println 'running ............................................'
         super.createConsoleReader()
     }
 }
