@@ -10,5 +10,8 @@ dependencies {
 
     compile 'org.eclipse.jgit:org.eclipse.jgit:2.3.1.201302201838-r'
 
-    compile project(':core')
+    compile project(':hash-core')
+
+    testCompile "org.springframework:spring-test:$springVersion"
+    testCompile 'junit:junit:4.11'
 }

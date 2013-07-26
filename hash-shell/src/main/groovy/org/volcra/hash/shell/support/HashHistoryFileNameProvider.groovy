@@ -13,45 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.volcra.hash.shell.net
+package org.volcra.hash.shell.support
 
-import groovy.transform.CompileStatic
 import org.springframework.beans.factory.InitializingBean
-import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
+import org.springframework.shell.plugin.HistoryFileNameProvider
 import org.springframework.stereotype.Component
 
 /**
- * Concrete class of {@link ProxySelector} used to clone repositories with JGit.
- *
- * @author Emanuelle Gardu&ntilde;o
+ * History File Name Provider.
  */
 @Component
-@CompileStatic
-class HashShellProxySelector extends ProxySelector implements InitializingBean {
+@Order(Ordered.HIGHEST_PRECEDENCE)
+class HashHistoryFileNameProvider implements HistoryFileNameProvider, InitializingBean {
     /**
-     * Proxy settings.
-     *
-     * <p>May be null if no proxy is set up.
+     * Name of the history file.
      */
-    @Autowired
-    Proxy proxy
+    @Value("#{shellProperties['shell.historyFile']}")
+    final String historyFileName
 
-    @Override
-    List<Proxy> select(URI uri) {
-        [proxy]
-    }
-
-    @Override
-    void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
-        ioe.printStackTrace()
+    /**
+     * Name of this plugin.
+     * @return "hash shell file name provider"
+     */
+    String name() {
+        'hash shell file name provider'
     }
 
     /**
-     * Sets this instance as ProxySelector default if {@link HashShellProxySelector#proxy} is not null.
+     * Creates the directory and log file in case hey don't exist.
+     *
      * @throws Exception
      */
     @Override
     void afterPropertiesSet() throws Exception {
-        if (proxy) ProxySelector.default = this
+        new File(historyFileName).with {
+            parentFile.mkdirs()
+            createNewFile()
+        }
     }
 }

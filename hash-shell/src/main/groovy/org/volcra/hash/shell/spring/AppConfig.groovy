@@ -42,8 +42,11 @@ class AppConfig {
      */
     @Bean
     RestTemplate getRestTemplate() {
-        if (proxy) new RestTemplate(new SimpleClientHttpRequestFactory(proxy: proxy))
-        else new RestTemplate()
+        if (proxy) {
+            new RestTemplate(new SimpleClientHttpRequestFactory(proxy: proxy))
+        } else {
+            new RestTemplate()
+        }
     }
 
     /**
@@ -54,9 +57,11 @@ class AppConfig {
     Proxy getProxy() {
         def env = System.properties
 
-        if (env[HTTP_PROXY_HOST])
+        if (env[HTTP_PROXY_HOST]) {
             new Proxy(Proxy.Type.HTTP, new InetSocketAddress(env[HTTP_PROXY_HOST].toString(),
                     (env['http.proxyPort'] ?: 80) as Integer))
-        else null
+        } else {
+            null
+        }
     }
 }

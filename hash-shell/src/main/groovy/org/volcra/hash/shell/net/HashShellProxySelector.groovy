@@ -13,47 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.volcra.hash.shell.support
+package org.volcra.hash.shell.net
 
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.InitializingBean
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.Ordered
-import org.springframework.core.annotation.Order
-import org.springframework.shell.plugin.HistoryFileNameProvider
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 /**
- * History File Name Provider.
+ * Concrete class of {@link ProxySelector} used to clone repositories with JGit.
+ *
+ * @author Emanuelle Gardu&ntilde;o
  */
 @Component
 @CompileStatic
-@Order(Ordered.HIGHEST_PRECEDENCE)
-class HashHistoryFileNameProvider implements HistoryFileNameProvider, InitializingBean {
+class HashShellProxySelector extends ProxySelector implements InitializingBean {
     /**
-     * Name of the history file.
+     * Proxy settings.
+     *
+     * <p>May be null if no proxy is set up.
      */
-    @Value("#{shellProperties['shell.historyFile']}")
-    final String historyFileName
+    @Autowired
+    Proxy proxy
 
-    /**
-     * Name of this plugin.
-     * @return "hash shell file name provider"
-     */
-    String name() {
-        'hash shell file name provider'
+    @Override
+    List<Proxy> select(URI uri) {
+        [proxy]
+    }
+
+    @Override
+    void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
     }
 
     /**
-     * Creates the directory and log file in case hey don't exist.
-     *
+     * Sets this instance as ProxySelector default if {@link HashShellProxySelector#proxy} is not null.
      * @throws Exception
      */
     @Override
     void afterPropertiesSet() throws Exception {
-        new File(historyFileName).with {
-            getParentFile().mkdirs()
-            createNewFile()
-        }
+        if (proxy) ProxySelector.default = this
     }
 }
