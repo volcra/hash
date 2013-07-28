@@ -1,0 +1,18 @@
+packages {
+    jquery {
+        main 'jquery.js'
+
+        repository {
+            url
+        }
+    }
+
+    bootstrap {
+        main 'bootstrap.js', 'bootstrap.css'
+        dependencies jquery: '1.9.1'
+
+        repository {
+            url 'https://github.com/twitter/bootstrap.git'
+        }
+    }
+}

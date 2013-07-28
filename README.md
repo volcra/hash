@@ -1,6 +1,6 @@
 # \#Hash
 
-Hash is Web Development tool for static resources. Resources like Less Styles Sheets and CoffeeScript files. It will integrate such tools into one suite, capable of installing and updating the tools as plugins or commands.
+Hash is a set of Web Development tools. It will integrate such tools into one suite, capable of installing and updating the tools as plugins or commands.
 
 
 ## Getting Started
