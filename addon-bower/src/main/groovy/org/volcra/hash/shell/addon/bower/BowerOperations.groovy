@@ -16,12 +16,24 @@
 package org.volcra.hash.shell.addon.bower
 
 /**
+ * Bower Operations.
  *
  * @author Emanuelle Gardu&ntilde;o
  */
 interface BowerOperations {
+    /**
+     * Version info and description of a particular package.
+     *
+     * @param name
+     */
     void info(String name)
 
+    /**
+     * Install a package locally.
+     *
+     * @param name package name
+     * @param version package version
+     */
     void install(String name, String version)
 
     void list()

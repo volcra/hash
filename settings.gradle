@@ -1,1 +1,1 @@
-include 'hash-core', 'addon-bower', 'hash-shell'
+include 'hash-core', 'addon-bower', 'addon-git', 'hash-shell'

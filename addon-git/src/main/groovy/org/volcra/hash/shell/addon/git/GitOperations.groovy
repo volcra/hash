@@ -13,27 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.volcra.hash.shell.support
+package org.volcra.hash.shell.addon.git
 
-import org.springframework.shell.core.JLineLogHandler
-import org.springframework.shell.core.JLineShellComponent
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.lib.Ref
+import org.eclipse.jgit.lib.Repository
+import org.eclipse.jgit.transport.FetchResult
 
 /**
  *
  * @author Emanuelle Gardu&ntilde;o
  */
-class HashJLineShellComponent extends JLineShellComponent {
-    HashJLineShellComponent magenta(String message) {
-        reader.printString JLineLogHandler.ANSIBuffer.magenta(message).toString()
-        this
-    }
+public interface GitOperations {
+    /**
+     * Clone a repository.
+     *
+     * @param uri repository uri
+     * @return Git repository
+     */
+    Git clone(String uri)
 
-    HashJLineShellComponent yellow(String message) {
-        reader.printString JLineLogHandler.ANSIBuffer.yellow(message).toString()
-        this
-    }
+    Git clone(File directory, uri)
 
-    void newLine() {
-        reader.printNewline()
-    }
+    FetchResult fetch(Repository repository)
+
+    Ref checkout(Repository repository, String name)
+
+    List<Ref> branches(Repository repository)
+
+    List<Ref> tags(Repository repository)
 }

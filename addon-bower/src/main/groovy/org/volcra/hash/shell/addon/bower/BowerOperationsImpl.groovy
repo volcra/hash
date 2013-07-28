@@ -1,3 +1,18 @@
+/*
+ * Copyright 2013 Volcra
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.volcra.hash.shell.addon.bower
 
 import groovy.io.FileType
@@ -35,6 +50,7 @@ class BowerOperationsImpl implements BowerOperations {
     /**
      * Components root folder.
      */
+    // TODO move to core project
     @Value("#{shellProperties['components.dir']}")
     File components
 
@@ -93,11 +109,13 @@ class BowerOperationsImpl implements BowerOperations {
             def gitRepository = new GitRepository(pkg.name as String, pkg.website as String, new File(".hash/$name"))
 
             colorLogger.cyan name printNewline()
-            println '\nVersions: '
+            println '\n  Versions: '
 
-            gitRepository.tagList().each { Ref ref ->
-                println "- ${ref.name.substring(ref.name.lastIndexOf('/') + 1)}"
+            gitRepository.tagList() each { Ref ref ->
+                println sprintf('%4s%s', '', "- ${ref.name.substring(ref.name.lastIndexOf('/') + 1)}")
             }
+
+            println()
         } else
             colorLogger.cyan name yellow ' was not found' printNewline()
     }
@@ -161,6 +179,8 @@ class BowerOperationsImpl implements BowerOperations {
             println 'Search results:\n'
 
             matches.each { colorLogger.cyan "    $it.name " log "$it.website" printNewline() }
+
+            println()
         } else
             colorLogger.yellow 'No results' printNewline()
     }

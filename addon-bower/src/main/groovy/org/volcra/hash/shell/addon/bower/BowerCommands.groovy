@@ -22,11 +22,15 @@ import org.springframework.shell.core.annotation.CliOption
 import org.springframework.stereotype.Component
 
 /**
+ * Bower Commands.
  *
  * @author Emanuelle Gardu&ntilde;o
  */
 @Component
 class BowerCommands implements CommandMarker {
+    /**
+     * Bower Operations.
+     */
     @Autowired
     BowerOperations bowerOperations
 
