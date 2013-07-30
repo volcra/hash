@@ -5,10 +5,7 @@
 define(['app'], function (app) {
   app.controller('MenuCtrl', ['$scope', '$location', function ($scope, $location) {
     $scope.menu = {
-      items: [{
-          text: 'Home', url: '#/home', target: '_self'
-        }
-      ]
+      items: []
     }
 
     $scope.getMenuItemClassStyle = function (item) {
