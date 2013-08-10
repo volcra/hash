@@ -32,6 +32,7 @@ dependencies {
 
     compile project(':addon-bower')
     compile project(':addon-git')
+    compile project(':addon-jet')
 
 }
 
